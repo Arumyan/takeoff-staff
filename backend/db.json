@@ -1,3 +1,9 @@
 {
-  "users": [{ "id": 1, "name": "admin", "password": "admin" }]
+  "auth": [
+    {
+      "id": 0,
+      "name": "admin",
+      "password": "admin"
+    }
+  ]
 }

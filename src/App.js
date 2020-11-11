@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.scss';
 
 import Login from './pages/Login/Login';
@@ -9,19 +9,31 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Button } from 'react-bootstrap';
 
 import { Switch, Route } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginThunk } from './redux/reducers/authReducer';
 
 const App = () => {
+
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector((state) => state.authReducer)
+
+  useEffect(() => {
+    //dispatch(loginThunk())
+  }, []);
 
   return (
     <>
       <Navbar bg='light'>
         <Navbar.Brand>Takeoff Staff</Navbar.Brand>
-        <Button
-          className='ml-auto'
-          variant='outline-success'
-        >
-          Войти
-        </Button>
+        {
+          isAuth && (<Button
+            className='ml-auto'
+            variant='outline-success'
+          >
+            Выйти
+          </Button>)
+        }
+        
       </Navbar>
 
       <div className='app-content'>
