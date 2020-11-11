@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './App.scss';
 
-function App() {
+import Login from './pages/Login/Login';
+import Contacts from './pages/Contacts/Contacts';
+import PageNotFound from './pages/PageNotFound/PageNotFound';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Button } from 'react-bootstrap';
+
+import { Switch, Route } from 'react-router-dom';
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Navbar bg='light'>
+        <Navbar.Brand>Takeoff Staff</Navbar.Brand>
+        <Button
+          className='ml-auto'
+          variant='outline-success'
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          Войти
+        </Button>
+      </Navbar>
+
+      <div className='app-content'>
+        <Switch>
+          <Route path='/' exact component={Contacts}></Route>
+          <Route path='/login' exact component={Login}></Route>
+          <Route path='*' component={PageNotFound}></Route>
+        </Switch>
+      </div>
+    </>
   );
-}
+};
 
 export default App;
