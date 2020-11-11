@@ -4,6 +4,22 @@
   box-sizing: border-box;
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .navbar {
+    flex: 0 0 auto;;
+  }
+
+  .app-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+  }
+}
+
 ul {
   margin: 0;
   padding: 0;
