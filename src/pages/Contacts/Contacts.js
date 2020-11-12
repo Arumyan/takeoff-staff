@@ -59,7 +59,7 @@ const Contacts = () => {
         </div>
       </div>
 
-      <Table striped hover>
+      <Table striped hover className={classes.TableContacts}>
         <thead>
           <tr>
             <th>#</th>
