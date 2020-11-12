@@ -1,7 +1,8 @@
 import {
   CHANGE_CONTACT,
   DELETE_CONTACT,
-  CHANGE_MODE
+  CHANGE_MODE,
+  ADD_CONTACT
 } from '../actions/actionType';
 
 const initialState = {
@@ -40,6 +41,14 @@ export default function contactsReducer(state = initialState, action) {
         }),
       };
 
+    case ADD_CONTACT:
+      const updatedContacts = [...state.contacts];
+      updatedContacts.push(action.payload);
+      return {
+        ...state,
+        contacts: updatedContacts,
+      };
+
     case DELETE_CONTACT:
       const newContacts = [...state.contacts];
       const index = newContacts.find((item) => item.id === action.payload);
@@ -66,6 +75,13 @@ export default function contactsReducer(state = initialState, action) {
       return state;
   }
 }
+
+export const addContact = (newContact) => {
+  return {
+    type: ADD_CONTACT,
+    payload: newContact,
+  };
+};
 
 export const deleteContact = (contactId) => {
   return {

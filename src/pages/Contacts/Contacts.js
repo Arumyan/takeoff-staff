@@ -4,14 +4,17 @@ import classes from './Contact.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Table, Container, Button } from 'react-bootstrap';
+
 import ContactActions from './ContactActions/ContactActions';
 import ContactField from './ContactField/ContactField';
-import ContactTableHeader from './ContactTableHeader/ContactTableHeader'
+import ContactTableHeader from './ContactTableHeader/ContactTableHeader';
+import FormAddContact from './FormAddContact/FormAddContact';
 
 import {
   deleteContact,
   changeMode,
   changeContact,
+  addContact
 } from '../../redux/reducers/contactsReducer';
 
 const Contacts = () => {
@@ -19,6 +22,8 @@ const Contacts = () => {
   const dispatch = useDispatch();
   const { isAuth } = useSelector((state) => state.authReducer);
   const { contacts } = useSelector((state) => state.contactsReducer);
+
+  const [formAddContact, setFormAddContact] = useState(false);
 
   const [form, setForm] = useState({
     name: '',
@@ -48,6 +53,21 @@ const Contacts = () => {
     dispatch(changeMode(contactId));
   };
 
+  const addContactHandler = () => {
+    setFormAddContact(true)
+  };
+
+  const createContactHandler = (values) => {
+    const newContact = {
+      id: new Date().toLocaleString(),
+      name: values.newName,
+      phone: values.newPhone
+    }
+    setFormAddContact(false)
+
+    dispatch(addContact(newContact))
+  }
+
   if (!isAuth) {
     history.push('/login');
   }
@@ -58,9 +78,13 @@ const Contacts = () => {
         <h1>Контакты</h1>
 
         <div className={classes.ContactsHeaderAction}>
-          <Button variant='success'>Добавить</Button>
+          <Button variant='success' onClick={addContactHandler}>
+            Новый контакт
+          </Button>
         </div>
       </div>
+
+      {formAddContact && <FormAddContact createContact={createContactHandler}/>}
 
       <Table striped hover className={classes.TableContacts}>
         <ContactTableHeader />
