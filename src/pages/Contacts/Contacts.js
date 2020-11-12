@@ -61,7 +61,8 @@ const Contacts = () => {
     const newContact = {
       id: new Date().toLocaleString(),
       name: values.newName,
-      phone: values.newPhone
+      phone: values.newPhone,
+      editMode: false
     }
     setFormAddContact(false)
 

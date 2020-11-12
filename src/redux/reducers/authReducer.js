@@ -55,8 +55,9 @@ export const loginThunk = (login, password) => async (dispatch) => {
     // NOTE!
     // Emulation verification of the user
     // of course, it must occur on a real server
-    data.forEach((user) => {
-      if (user.name === login && user.password === password) {
+    const isAuth = data.some((user) => (user.name === login && user.password === password))
+
+      if(isAuth) {
         dispatch(errorActionCreator({ error: null }));
         dispatch(setAuthActionCreator({ isAuth: true }));
         dispatch(isLoadingActionCreator({ isLoading: false }));
@@ -68,8 +69,8 @@ export const loginThunk = (login, password) => async (dispatch) => {
         dispatch(setAuthActionCreator({ isAuth: false }));
         dispatch(isLoadingActionCreator({ isLoading: false }));
       }
-    });
-  } else {
+    }
+  else {
     dispatch(errorActionCreator({ error: 'Что то пошло не так...' }));
     dispatch(setAuthActionCreator({ isAuth: false }));
     dispatch(isLoadingActionCreator({ isLoading: false }));
