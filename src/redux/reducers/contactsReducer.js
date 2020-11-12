@@ -43,7 +43,7 @@ export default function contactsReducer(state = initialState, action) {
 
     case ADD_CONTACT:
       const updatedContacts = [...state.contacts];
-      updatedContacts.unshift(action.payload);
+      updatedContacts.unshift(action.newContact);
       return {
         ...state,
         contacts: updatedContacts,
@@ -51,7 +51,7 @@ export default function contactsReducer(state = initialState, action) {
 
     case DELETE_CONTACT:
       const newContacts = [...state.contacts];
-      const index = newContacts.findIndex((item) => item.id === action.payload);
+      const index = newContacts.findIndex((item) => item.id === action.contactId);
 
       newContacts.splice(index, 1);
 
@@ -64,7 +64,7 @@ export default function contactsReducer(state = initialState, action) {
       return {
         ...state,
         contacts: state.contacts.map((contact) => {
-          if (contact.id === action.payload) {
+          if (contact.id === action.contactId) {
             return { ...contact, editMode: !contact.editMode };
           }
 
@@ -80,21 +80,21 @@ export default function contactsReducer(state = initialState, action) {
 export const addContact = (newContact) => {
   return {
     type: ADD_CONTACT,
-    payload: newContact,
+    newContact,
   };
 };
 
 export const deleteContact = (contactId) => {
   return {
     type: DELETE_CONTACT,
-    payload: contactId,
+    contactId,
   };
 };
 
 export const changeMode = (contactId) => {
   return {
     type: CHANGE_MODE,
-    payload: contactId,
+    contactId,
   };
 };
 
