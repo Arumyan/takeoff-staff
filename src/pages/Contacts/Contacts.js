@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classes from './Contact.module.scss';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Table, Container, Button } from 'react-bootstrap';
+import ContactActions from './ContactActions/ContactActions'
 
 import {
   deleteContact,
@@ -34,7 +35,7 @@ const Contacts = () => {
     dispatch(deleteContact(contactId));
   };
 
-  const editContactHandler = (contactId) => {
+  const changeModeHandler = (contactId) => {
     dispatch(changeMode(contactId));
     const contact = contacts.find((item) => item.id === contactId);
 
@@ -110,12 +111,21 @@ const Contacts = () => {
                   )}
                 </td>
                 <td className='text-right'>
+
+                  <ContactActions 
+                      isEditMode={contact.editMode}
+                      onChangeMode={() => changeModeHandler(contact.id)}
+                      onDelete={() => deleteContactHandler(contact.id)}
+                      onSave={() =>  changeContactHandler(contact.id)}
+                  />
+
+
                   {!contact.editMode && (
                     <div className={classes.BtnGroup}>
                       <Button
                         variant='primary'
                         size='sm'
-                        onClick={() => editContactHandler(contact.id)}
+                        onClick={() => changeModeHandler(contact.id)}
                       >
                         Редактировать
                       </Button>
@@ -139,7 +149,7 @@ const Contacts = () => {
                         className='ml-2'
                         variant='secondary'
                         size='sm'
-                        onClick={() => editContactHandler(contact.id)}
+                        onClick={() => changeModeHandler(contact.id)}
                       >
                         Отменить
                       </Button>
