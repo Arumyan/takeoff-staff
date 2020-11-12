@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Login.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../../redux/reducers/authReducer';
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -10,7 +10,6 @@ import * as Yup from 'yup';
 const Login = () => {
   const { isAuth, isLoading, error } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const initialValues = {
     login: '',
@@ -29,7 +28,7 @@ const Login = () => {
   };
 
   if (isAuth) {
-    history.push('/');
+    return <Redirect to='/'/>
   }
 
   return (

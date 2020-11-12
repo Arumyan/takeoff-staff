@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classes from './Contact.module.scss';
 
+import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Table, Container, Button } from 'react-bootstrap';
 
 import ContactActions from './ContactActions/ContactActions';
@@ -14,15 +14,13 @@ import {
   deleteContact,
   changeMode,
   changeContact,
-  addContact
+  addContact,
 } from '../../redux/reducers/contactsReducer';
 
 const Contacts = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const { isAuth } = useSelector((state) => state.authReducer);
   const { contacts } = useSelector((state) => state.contactsReducer);
-
   const [formAddContact, setFormAddContact] = useState(false);
 
   const [form, setForm] = useState({
@@ -54,7 +52,7 @@ const Contacts = () => {
   };
 
   const addContactHandler = () => {
-    setFormAddContact(true)
+    setFormAddContact(true);
   };
 
   const createContactHandler = (values) => {
@@ -62,15 +60,15 @@ const Contacts = () => {
       id: new Date().toLocaleString(),
       name: values.newName,
       phone: values.newPhone,
-      editMode: false
-    }
-    setFormAddContact(false)
+      editMode: false,
+    };
+    setFormAddContact(false);
 
-    dispatch(addContact(newContact))
-  }
+    dispatch(addContact(newContact));
+  };
 
   if (!isAuth) {
-    history.push('/login');
+    return <Redirect to='/login' />;
   }
 
   return (
@@ -85,7 +83,9 @@ const Contacts = () => {
         </div>
       </div>
 
-      {formAddContact && <FormAddContact createContact={createContactHandler}/>}
+      {formAddContact && (
+        <FormAddContact createContact={createContactHandler} />
+      )}
 
       <Table striped hover className={classes.TableContacts}>
         <ContactTableHeader />

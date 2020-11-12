@@ -1,5 +1,5 @@
 import { authAPI } from '../../api/api';
-import {SET_AUTH, AUTH_IS_LOADING, AUTH_ERROR } from '../actions/actionType'
+import { SET_AUTH, AUTH_IS_LOADING, AUTH_ERROR } from '../actions/actionType';
 
 const initialState = {
   isAuth: false,
@@ -55,22 +55,22 @@ export const loginThunk = (login, password) => async (dispatch) => {
     // NOTE!
     // Emulation verification of the user
     // of course, it must occur on a real server
-    const isAuth = data.some((user) => (user.name === login && user.password === password))
+    const isAuth = data.some(
+      (user) => user.name === login && user.password === password
+    );
 
-      if(isAuth) {
-        dispatch(errorActionCreator({ error: null }));
-        dispatch(setAuthActionCreator({ isAuth: true }));
-        dispatch(isLoadingActionCreator({ isLoading: false }));
+    if (isAuth) {
+      dispatch(errorActionCreator({ error: null }));
+      dispatch(setAuthActionCreator({ isAuth: true }));
+      dispatch(isLoadingActionCreator({ isLoading: false }));
 
-        document.cookie = "userIsAuth=true";
-      }
-      else {
-        dispatch(errorActionCreator({ error: 'Не верные учетные данные' }));
-        dispatch(setAuthActionCreator({ isAuth: false }));
-        dispatch(isLoadingActionCreator({ isLoading: false }));
-      }
+      document.cookie = 'userIsAuth=true';
+    } else {
+      dispatch(errorActionCreator({ error: 'Не верные учетные данные' }));
+      dispatch(setAuthActionCreator({ isAuth: false }));
+      dispatch(isLoadingActionCreator({ isLoading: false }));
     }
-  else {
+  } else {
     dispatch(errorActionCreator({ error: 'Что то пошло не так...' }));
     dispatch(setAuthActionCreator({ isAuth: false }));
     dispatch(isLoadingActionCreator({ isLoading: false }));
@@ -81,10 +81,10 @@ export const logoutThunk = () => async (dispatch) => {
   dispatch(isLoadingActionCreator({ isLoading: true }));
   const data = await authAPI.logout();
 
-  if(data) {
+  if (data) {
     dispatch(isLoadingActionCreator({ isLoading: false }));
     dispatch(setAuthActionCreator({ isAuth: false }));
 
-    document.cookie = "userIsAuth=; Max-Age=-1";
+    document.cookie = 'userIsAuth=; Max-Age=-1';
   }
 };
