@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './Contact.module.scss';
 
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Table, Container, Button } from 'react-bootstrap';
+import { v4 as uuidv4 } from 'uuid';
 
 import ContactActions from './ContactActions/ContactActions';
 import ContactField from './ContactField/ContactField';
@@ -22,6 +23,24 @@ const Contacts = () => {
   const { isAuth } = useSelector((state) => state.authReducer);
   const { contacts } = useSelector((state) => state.contactsReducer);
   const [formAddContact, setFormAddContact] = useState(false);
+  const [query, setQuery] = useState('');
+  const [filteredContacts, setfilteredContacts] = useState([]);
+
+  useEffect(() => {
+    setfilteredContacts(contacts);
+  }, [query, contacts])
+
+  useEffect(() => {
+    const filteredContacts = contacts.filter(contact => {
+      return contact.name.toLowerCase().includes(query.toLowerCase())
+    })
+
+    setfilteredContacts(filteredContacts)
+  }, [query])
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+  };
 
   const [form, setForm] = useState({
     name: '',
@@ -57,7 +76,7 @@ const Contacts = () => {
 
   const createContactHandler = (values) => {
     const newContact = {
-      id: new Date().toLocaleString(),
+      id: uuidv4(),
       name: values.newName,
       phone: values.newPhone,
       editMode: false,
@@ -87,19 +106,29 @@ const Contacts = () => {
         <FormAddContact createContact={createContactHandler} />
       )}
 
+      <div className={classes.ContactSearch}>
+        <input
+          className={classes.InputSearch}
+          value={query}
+          onChange={handleInputChange}
+          type='text'
+          placeholder='Введите имя контакта'
+        />
+      </div>
+
       <Table striped hover className={classes.TableContacts}>
         <ContactTableHeader />
 
         <tbody>
-          {!contacts.length ? (
+          {!filteredContacts.length ? (
             <tr>
               <td className='text-center' colSpan='4'>
-                Контактов нет
+                Контактов не найдено
               </td>
             </tr>
           ) : null}
 
-          {contacts.map((contact, index) => {
+          {filteredContacts.map((contact, index) => {
             return (
               <tr key={contact.id}>
                 <td>{index + 1}</td>

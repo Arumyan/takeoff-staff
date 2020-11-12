@@ -9,22 +9,52 @@ const initialState = {
   contacts: [
     {
       id: 0,
-      name: 'User 1',
+      name: 'Lorem ipsum dolor sit amet.',
       phone: '8-800-123-456',
       editMode: false,
     },
     {
       id: 1,
-      name: 'User 2',
+      name: 'Nikolay Morozov',
       phone: '8-800-123-456',
       editMode: false,
     },
     {
       id: 2,
-      name: 'User 3',
+      name: 'Alexey Petrov',
       phone: '8-800-123-456',
       editMode: false,
     },
+    {
+      id: 3,
+      name: 'Ivan Ivanov',
+      phone: '8-800-123-456',
+      editMode: false,
+    },
+    {
+      id: 4,
+      name: 'John Snuk',
+      phone: '8-800-123-456',
+      editMode: false,
+    },
+    {
+      id: 5,
+      name: 'Ivan Ivanov 4',
+      phone: '8-800-123-456',
+      editMode: false,
+    },
+    {
+      id: 6,
+      name: 'Ivan Ivanov 2',
+      phone: '8-800-123-456',
+      editMode: false,
+    },
+    {
+      id: 7,
+      name: '77 John Snuk 44',
+      phone: '8-800-123-456',
+      editMode: false,
+    }
   ],
 };
 
