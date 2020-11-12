@@ -43,7 +43,7 @@ export default function contactsReducer(state = initialState, action) {
 
     case ADD_CONTACT:
       const updatedContacts = [...state.contacts];
-      updatedContacts.push(action.payload);
+      updatedContacts.unshift(action.payload);
       return {
         ...state,
         contacts: updatedContacts,
@@ -51,7 +51,8 @@ export default function contactsReducer(state = initialState, action) {
 
     case DELETE_CONTACT:
       const newContacts = [...state.contacts];
-      const index = newContacts.find((item) => item.id === action.payload);
+      const index = newContacts.findIndex((item) => item.id === action.payload);
+
       newContacts.splice(index, 1);
 
       return {

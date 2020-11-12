@@ -93,7 +93,7 @@ const Contacts = () => {
         <tbody>
           {!contacts.length ? (
             <tr>
-              <td className='text-center' colspan='4'>
+              <td className='text-center' colSpan='4'>
                 Контактов нет
               </td>
             </tr>
