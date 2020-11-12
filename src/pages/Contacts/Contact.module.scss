@@ -1,0 +1,19 @@
+.ContactsHeader {
+  display: flex;
+  align-items: center;
+  margin: 0 0 20px;
+
+  h1 {
+    flex: 0 0 auto;
+  }
+
+  .ContactsHeaderAction {
+    margin: 0 0 0 auto;
+  }
+}
+
+.BtnGroup {
+  button {
+    min-width: 115px;
+  }
+}
