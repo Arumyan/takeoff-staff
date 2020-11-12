@@ -8,7 +8,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 const Login = () => {
-  const { isAuth, isLoading } = useSelector((state) => state.authReducer);
+  const { isAuth, isLoading, error } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -37,11 +37,15 @@ const Login = () => {
       <div className='p-3 mb-5 bg-info text-white'>
         Тестовый логин и пароль - admin/admin
       </div>
+
+      {error ? <p className={'text-danger mb-2'}>{error}</p> : null}
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
+
         {(formik) => (
           <Form>
             <div className='form-group'>

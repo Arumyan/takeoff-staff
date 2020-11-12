@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 
 import Login from './pages/Login/Login';
@@ -10,31 +10,44 @@ import { Navbar, Button } from 'react-bootstrap';
 
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutThunk } from './redux/reducers/authReducer';
+import { logoutThunk, setAuthActionCreator } from './redux/reducers/authReducer';
 
 const App = () => {
-
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((state) => state.authReducer)
+  const { isAuth } = useSelector((state) => state.authReducer);
 
   const logout = () => {
-    dispatch(logoutThunk())
+    dispatch(logoutThunk());
+  };
+
+  const getСookie = (cookie_name) => {
+    var results = document.cookie.match(
+      '(^|;) ?' + cookie_name + '=([^;]*)(;|$)'
+    );
+
+    if (results) return unescape(results[2]);
+    else return null;
   }
+
+  useEffect(() => {
+    if(getСookie('userIsAuth')) {
+      dispatch(setAuthActionCreator({isAuth: true}));
+    };
+  }, []);
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg='dark' variant='dark'>
         <Navbar.Brand>Takeoff Staff</Navbar.Brand>
-        {
-          isAuth && (<Button
+        {isAuth && (
+          <Button
             className='ml-auto'
             variant='outline-success'
             onClick={logout}
           >
             Выйти
-          </Button>)
-        }
-        
+          </Button>
+        )}
       </Navbar>
 
       <div className='app-content'>

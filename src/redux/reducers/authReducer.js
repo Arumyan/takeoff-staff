@@ -1,14 +1,11 @@
 import { authAPI } from '../../api/api';
+import {SET_AUTH, AUTH_IS_LOADING, AUTH_ERROR } from '../actions/actionType'
 
 const initialState = {
   isAuth: false,
   isLoading: false,
   error: null,
 };
-
-export const SET_AUTH = 'auth/SET_AUTH';
-export const AUTH_IS_LOADING = 'auth/AUTH_IS_LOADING';
-export const AUTH_ERROR = 'auth/AUTH_ERROR';
 
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
@@ -55,11 +52,20 @@ export const loginThunk = (login, password) => async (dispatch) => {
 
   // Check Auth Data
   if (data.length) {
+    // NOTE!
     // Emulation verification of the user
     // of course, it must occur on a real server
     data.forEach((user) => {
       if (user.name === login && user.password === password) {
+        dispatch(errorActionCreator({ error: null }));
         dispatch(setAuthActionCreator({ isAuth: true }));
+        dispatch(isLoadingActionCreator({ isLoading: false }));
+
+        document.cookie = "userIsAuth=true";
+      }
+      else {
+        dispatch(errorActionCreator({ error: 'Не верные учетные данные' }));
+        dispatch(setAuthActionCreator({ isAuth: false }));
         dispatch(isLoadingActionCreator({ isLoading: false }));
       }
     });
@@ -77,5 +83,7 @@ export const logoutThunk = () => async (dispatch) => {
   if(data) {
     dispatch(isLoadingActionCreator({ isLoading: false }));
     dispatch(setAuthActionCreator({ isAuth: false }));
+
+    document.cookie = "userIsAuth=; Max-Age=-1";
   }
 };
