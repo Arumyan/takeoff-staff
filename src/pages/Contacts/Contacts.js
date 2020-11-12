@@ -4,12 +4,14 @@ import classes from './Contact.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Table, Container, Button } from 'react-bootstrap';
-import ContactActions from './ContactActions/ContactActions'
+import ContactActions from './ContactActions/ContactActions';
+import ContactField from './ContactField/ContactField';
+import ContactTableHeader from './ContactTableHeader/ContactTableHeader'
 
 import {
   deleteContact,
   changeMode,
-  changeContact
+  changeContact,
 } from '../../redux/reducers/contactsReducer';
 
 const Contacts = () => {
@@ -27,10 +29,6 @@ const Contacts = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  if (!isAuth) {
-    history.push('/login');
-  }
-
   const deleteContactHandler = (contactId) => {
     dispatch(deleteContact(contactId));
   };
@@ -41,13 +39,17 @@ const Contacts = () => {
 
     setForm({
       name: contact.name,
-      phone: contact.phone
-    })
+      phone: contact.phone,
+    });
   };
 
   const changeContactHandler = (contactId) => {
     dispatch(changeContact(contactId, form));
     dispatch(changeMode(contactId));
+  };
+
+  if (!isAuth) {
+    history.push('/login');
   }
 
   return (
@@ -61,14 +63,8 @@ const Contacts = () => {
       </div>
 
       <Table striped hover className={classes.TableContacts}>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th></th>
-          </tr>
-        </thead>
+        <ContactTableHeader />
+
         <tbody>
           {!contacts.length ? (
             <tr>
@@ -83,78 +79,30 @@ const Contacts = () => {
               <tr key={contact.id}>
                 <td>{index + 1}</td>
                 <td>
-                  {contact.editMode ? (
-                    <input
-                      type='text'
-                      name='name'
-                      value={form.name}
-                      onChange={(e) => {
-                        formChangeHandler(e);
-                      }}
-                    />
-                  ) : (
-                    contact.name
-                  )}
+                  <ContactField
+                    isEditMode={contact.editMode}
+                    name='name'
+                    valueInput={form.name}
+                    value={contact.name}
+                    onChangeHandler={(e) => formChangeHandler(e)}
+                  />
                 </td>
                 <td>
-                {contact.editMode ? (
-                    <input
-                      type='text'
-                      name='phone'
-                      value={form.phone}
-                      onChange={(e) => {
-                        formChangeHandler(e);
-                      }}
-                    />
-                  ) : (
-                    contact.phone
-                  )}
+                  <ContactField
+                    isEditMode={contact.editMode}
+                    name='phone'
+                    valueInput={form.phone}
+                    value={contact.phone}
+                    onChangeHandler={(e) => formChangeHandler(e)}
+                  />
                 </td>
                 <td className='text-right'>
-
-                  <ContactActions 
-                      isEditMode={contact.editMode}
-                      onChangeMode={() => changeModeHandler(contact.id)}
-                      onDelete={() => deleteContactHandler(contact.id)}
-                      onSave={() =>  changeContactHandler(contact.id)}
+                  <ContactActions
+                    isEditMode={contact.editMode}
+                    onChangeMode={() => changeModeHandler(contact.id)}
+                    onDelete={() => deleteContactHandler(contact.id)}
+                    onSave={() => changeContactHandler(contact.id)}
                   />
-
-
-                  {!contact.editMode && (
-                    <div className={classes.BtnGroup}>
-                      <Button
-                        variant='primary'
-                        size='sm'
-                        onClick={() => changeModeHandler(contact.id)}
-                      >
-                        Редактировать
-                      </Button>
-                      <Button
-                        className='ml-2'
-                        variant='danger'
-                        size='sm'
-                        onClick={() => deleteContactHandler(contact.id)}
-                      >
-                        Удалить
-                      </Button>
-                    </div>
-                  )}
-
-                  {contact.editMode && (
-                    <div className={classes.BtnGroup}>
-                      <Button variant='success' size='sm' onClick={() => changeContactHandler(contact.id)}>
-                        Сохранить
-                      </Button>
-                      <Button
-                        className='ml-2'
-                        variant='secondary'
-                        size='sm'
-                        onClick={() => changeModeHandler(contact.id)}
-                      >
-                        Отменить
-                      </Button>
-                    </div>
-                  )}
                 </td>
               </tr>
             );
